@@ -1,0 +1,82 @@
+<div  style="margin-top: 30px; margin-bottom: 30px" class="ui grid container centered">
+  <div ng-if="!sended" class="ui segment left aligned">
+    <div ngfx-speed="slow" ngfx-fade-in="true" style="margin-bottom: 20px; text-align: center" class="row container">
+      <h5>Регистрация</h5>
+    </div>
+    <form ngfx-speed="slow" ngfx-fade-in="true" class="ui form column ">
+      <div class="field">
+        <label>Логин</label>
+        <input type="text" ng-model="registerData.username" ng-blur="checkLogin();checkLoginDirty() " name="login"
+               placeholder="Логин" required>
+      </div>
+      <div ng-if="!loginValid" class="ui negative message">
+        <p>Такой логин уже зарегистрирован в системе
+        </p>
+      </div>
+      <div ng-if="!loginNotDirty" class="ui negative message">
+        <p>Длинна должна быть не менее 6 символов, <br>
+          можно использовать только цифры и буквы
+        </p>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" ng-model="registerData.email" ng-blur="checkEmail();checkEmailDirty()" name="email"
+               placeholder="Email"
+               required>
+      </div>
+      <div ng-if="!emailNotDirty" class="ui negative message">
+        <p>Неправильный адрес электронной почты
+        </p>
+      </div>
+      <div ng-if="!emailValid" class="ui negative message">
+        <p>Такой email уже зарегистрирован в системе
+        </p>
+      </div>
+      <div class="field">
+        <label>Пароль</label>
+        <input ng-blur="isPasswordDismatch();checkPassDirty()" type="password" ng-model="registerData.password"
+               name="password"
+               placeholder="Пароль" required>
+      </div>
+      <div class="field">
+        <label>Повторите пароль</label>
+        <input ng-blur="isPasswordDismatch();checkPassDirty()" type="password" ng-model="accessory.repPassword"
+               name="repPassword"
+               placeholder="Повторите пароль" required>
+      </div>
+      <div ng-if="!passwordValid" class="ui negative message">
+        <p>Пароли не совпадают
+        </p>
+      </div>
+      <div ng-if="!passwordNotDirty" class="ui negative message">
+        <p>Мин. длинна пароля - 6 симовлов
+        </p>
+      </div>
+      <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" ng-model="accessory.dontAsshole" tabindex="0" class="">
+          <label>Я не буду безобразничать и согласен быть паинькой.</label>
+        </div>
+      </div>
+      <div class="ui grid centered vertically padded">
+        <button ng-click="clickRegister()" class="ui button teal" ng-disabled="isRegisterBtnDisabled()" type="submit"><i
+          class="add user icon"></i>Зарегистрироваться
+        </button>
+      </div>
+    </form>
+  </div>
+  <div ngfx-speed="slow" ngfx-fade-in="true" ng-if="foundUserUnconfirmed" class="ui grid container">
+    <div>
+      <h5> В системе уже есть запись с таким логином/email<br>
+        Выслать письмо-подтверждение повторно?</h5>
+      <button ng-click="clickResend()" class="ui button teal" ng-disabled="isRegisterBtnDisabled()" type="submit"><i
+        class="add user icon"></i>Переотправить
+      </button>
+    </div>
+  </div>
+  <div ngfx-speed="slow" ngfx-fade-in="true" ng-if="allOk" class="ui grid container">
+    <div>
+      <h5>Письмо с потверждением выслано на указанный адрес электронной почты. Если письмо не приходит, проверьте в папке со спамом</h5>
+    </div>
+  </div>
+</div>

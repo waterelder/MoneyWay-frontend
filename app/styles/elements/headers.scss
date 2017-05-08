@@ -1,0 +1,19 @@
+#bg-yaroslavl {
+  background-repeat: no-repeat;
+  height: 200px;
+  background-attachment: fixed;
+  position: relative;
+
+}
+
+.main-content {
+  min-height: calc(100vh - 153px);
+}
+
+.footer {
+  height: 100px;
+}
+
+.left-login-fix {
+  margin-left: 0px!important;
+}

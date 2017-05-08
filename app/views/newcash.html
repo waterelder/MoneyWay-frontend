@@ -1,0 +1,63 @@
+<div ng-controller="NewCashCtrl">
+  <header ngfx-speed="slow" ngfx-fade-in="true" id="bg-yaroslavl" style="background-image: url('../images/back.png');">
+    <div class="row">
+      <div class="medium-9 large-8 columns"></div>
+    </div>
+  </header>
+  <div class="ui grid page" style="margin-top: 30px; margin-bottom: 30px">
+    <button class="ui left labeled icon button" ng-click="goToMain()">
+      <i class="left arrow icon"></i>
+      Мои купюры
+    </button>
+    <div class="one column row">
+      <div class="column centered">
+        <h3>Добавление купюры</h3>
+      </div>
+    </div>
+
+    <div ngfx-speed="medium" ngfx-fade-in="true" class="two column row">
+      <div class="column">
+        <div class="ui form">
+          <div class="ui field">
+            <label>Номер банкноты:
+              <input type="text" ng-model="lookUpCash.cashId" mask="DD 9999999" restrict="reject" required>
+            </label>
+          </div>
+          <div class="ui field">
+            <label>Номинал банкноты
+              <sm-dropdown ng-if="banknotesLoaded" class="fluid selection" model="lookUpCash.banknote" items="banknotes"
+                           label="item.label" value="item" default-text="'Банкнота'"></sm-dropdown>
+
+              <script>
+                $(document).ready(function () {
+                  $('.ui.dropdown').dropdown();
+                });
+              </script>
+            </label>
+          </div>
+          <div class="ui field">
+            <label>Коментарий:
+              <textarea type="text" ng-model="lookUpCash.comment" placeholder="Коментарий"></textarea>
+            </label>
+          </div>
+          <button ng-disabled="!isAddable()" ng-click="add()" style="margin-top: 15px" type="submit" class="ui teal button"><i
+            class="plus icon"></i>Добавить
+          </button>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui form">
+          <div class="ui field">
+            <label>Адрес: {{lookUpCash.address}}
+            </label>
+            <ng-map style="margin-top: 20px" id="lookup"></ng-map>
+
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

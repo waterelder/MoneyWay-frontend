@@ -1,0 +1,67 @@
+<div ng-controller="CashCtrl">
+
+  <header ngfx-speed="slow" ngfx-fade-in="true" id="bg-yaroslavl" style="background-image: url('../images/back.png');">
+    <div class="row">
+      <div class="medium-9 large-8 columns"></div>
+    </div>
+  </header>
+
+  <div class="ui grid page" style="margin-top: 30px; margin-bottom: 30px">
+    <button class="ui left labeled icon button" ng-click="goToMain()">
+      <i class="left arrow icon"></i>
+      Мои купюры
+    </button>
+    <div class="one column row">
+      <div class="column centered">
+        <h3>Купюра {{cashArray[0].cashId}}</h3>
+      </div>
+    </div>
+
+
+    <div ngfx-speed="slow" ngfx-fade-in="true"
+         class="one column row fade">
+      <div class="column">
+        <table class="ui unstackable selectable  striped  table">
+          <thead>
+          <tr>
+            <th>Тип банкноты</th>
+            <th>Номер банкноты</th>
+            <th>Дата регистрации</th>
+            <th>Регион</th>
+            <th>Пользователь</th>
+            <th>Коментарий</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="cash in cashArray">
+            <td>
+
+              <div ng-bind-html="cash.banknote.label"></div>
+              ({{cash.banknote.banknoteType.code}})
+
+            </td>
+            <td>{{cash.cashId}}</td>
+            <td>{{getTime(cash.datetime)}}</td>
+            <td>{{cash.address}}</td>
+            <td>{{cash.user?cash.user.username:""}}</td>
+            <td>{{cash.comment}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div style="margin-left: 40px;" ng-if="myCash.length == 0" class="row">
+          <h5>Нeт ни одной купюры</h5>
+        </div>
+      </div>
+      <div class="ui two column grid">
+        <div ng-if="myCash.length > 0" class="two column row">
+          <div class="column">
+            <h4>Всего купюр: {{myCash.length}}</h4>
+          </div>
+          <div class="column">
+            <h4>На сумму: {{moneyCount}} руб.</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

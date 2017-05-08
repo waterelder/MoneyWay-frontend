@@ -1,0 +1,244 @@
+<!-- Navigation -->
+
+<div ng-controller="HomeCtrl">
+  <header ngfx-speed="slow" ngfx-fade-in="true" id="bg-yaroslavl" style="background-image: url('../images/back.png');">
+    <div class="row">
+      <div class="medium-9 large-8 columns"></div>
+    </div>
+  </header>
+  <div ng-if="!isAuthenticated()">
+    <div ngfx-speed="slow" ngfx-fade-in="true" class="ui grid">
+      <div class="row">
+        <div class="column padding-reset ">
+          <div class="ui two column  huge message page grid">
+            <div class="row">
+              <div class="column twelve wide">
+                <h1 class="ui huge header">Отследи свою купюру!</h1>
+                <p>В каких городах побывала Ваша купюра? Скольким людям она ещё достанется? Быть может новенькая
+                  банкнота в Ваших руках только начинает свой путь? Теперь можно не утруждать себя вопросом: "где мои
+                  деньги?" Money Way расскажет где побывала и куда направилась ваша купюра. Начните историю своей купюры
+                  здесь!</p>
+              </div>
+              <div class="column four wide">
+                <div class="show-for-large large-3 columns">
+                  <img style="width: 50%" src="images/map.png" alt="Map pic">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <a ng-click="goToRegister()" class="ui teal button"><i class="add user icon"></i>Регистрация</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui page grid">
+      <div ngfx-speed="slow" ngfx-fade-in="true" class="one column row">
+        <div class="column">
+          <h2 class="ui header"><i class="map outline icon"></i>Отследить без регистрации</h2>
+          <p>Регистрация позволит Вам следить за передвижением своих купюр, получать баллы и участвовать в общем топе.
+            Вы можете отследить купюру и без регистрации, но Ваш рейтинг от этого не изменится. Авторизируйтесь на сайте
+            и экономьте время при поиске купюр.</p>
+          <button class="ui tiny button m-top-10" ng-click="pressLookUp()">Ввести данные »</button>
+        </div>
+      </div>
+      <div ngfx-speed="medium" ngfx-fade-in="true" class="two column row" ng-if="isLookingUp">
+        <div class="column">
+          <div class="ui form">
+            <div class="ui field">
+              <label>Номер банкноты:
+                <input type="text" ng-model="lookUpCash.cashId" mask="DD 9999999" restrict="reject" required>
+              </label>
+            </div>
+            <div class="ui field">
+              <label>Номинал банкноты
+                <sm-dropdown class="fluid selection" model="lookUpCash.banknote" items="banknotes"
+                             label="item.label" value="item" default-text="'Банкнота'"></sm-dropdown>
+
+                <script>
+                  $(document).ready(function () {
+                    $('.ui.dropdown').dropdown();
+                  });
+                </script>
+              </label>
+            </div>
+            <div class="ui field">
+              <label>Коментарий:
+                <textarea type="text" ng-model="lookUpCash.comment" placeholder="Коментарий"></textarea>
+              </label>
+            </div>
+            <button ng-disabled="!isAddable()" ng-click="lookUp()" style="margin-top: 15px" type="submit"
+                    class="ui teal button"><i
+              class="search icon"></i>Найти
+            </button>
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui form">
+            <div class="ui field">
+              <label>Адрес: {{lookUpCash.address}}
+              </label>
+              <ng-map style="margin-top: 20px" id="lookup"></ng-map>
+
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+      <div ngfx-speed="slow" ng-if="isLookedUp" ngfx-fade-in="isLookedUp" ngfx-fade-out-left="!isLookedUp"
+           class="ui divider fade"></div>
+      <div ngfx-speed="slow" ng-if="isLookedUp" ngfx-fade-in="isLookedUp" ngfx-fade-out-left="!isLookedUp"
+           class="one column row fade">
+        <div class="column">
+          <table class="ui very basic table">
+            <thead>
+            <tr>
+              <th>Тип банкноты</th>
+              <th>Номер банкноты</th>
+              <th>Дата регистрации</th>
+              <th>Регион</th>
+              <th>Пользователь</th>
+              <th>Коментарий</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="cash in cashArray">
+              <td>
+                <div ng-bind-html="cash.banknote.label"></div>
+                ({{cash.banknote.banknoteType.code}})
+              </td>
+              <td>{{cash.cashId}}</td>
+              <td>{{getTime(cash.datetime)}}</td>
+              <td>{{cash.address}}</td>
+              <td>{{cash.user?cash.user.username:""}}</td>
+              <td>{{cash.comment}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ngfx-speed="slow" ngfx-fade-in="true" ng-if="isAuthenticated()" class="ui page grid">
+    <div class="row margin-top-20" style="margin-left: 40px">
+      <h3 class="ui header">Мои купюры</h3>
+    </div>
+    <div ngfx-speed="slow" ngfx-fade-in="true"
+         class="one column row fade">
+      <div class="column">
+        <table class="ui unstackable selectable  striped  table">
+          <thead>
+          <tr>
+            <th>Тип банкноты</th>
+            <th>Номер банкноты</th>
+            <th>Дата регистрации</th>
+            <th>Регион</th>
+            <th>Кол-во регистраций</th>
+            <th>Коментарий</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="cash in myCash" ng-click="goToCashPage(cash)">
+            <td>
+
+              <div ng-bind-html="cash.banknote.label"></div>
+              ({{cash.banknote.banknoteType.code}})
+
+            </td>
+            <td>{{cash.cashId}}</td>
+            <td>{{getTime(cash.datetime)}}</td>
+            <td>{{cash.address}}</td>
+            <td>{{cash.countOfEntries}}</td>
+            <td>{{cash.comment}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div style="margin-left: 40px;" ng-if="myCash.length == 0" class="row">
+          <h5>Нeт ни одной купюры</h5>
+        </div>
+      </div>
+      <div class="ui two column grid">
+        <div ng-if="myCash.length > 0" class="two column row">
+          <div class="column">
+            <h4>Всего моих купюр: {{myCash.length}}</h4>
+          </div>
+          <div class="column">
+            <h4>На сумму: {{moneyCount}} руб.</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="one column row">
+      <div class="column">
+        <button ng-click="addingModal()" style="margin-top: 15px" type="submit" class="ui teal button floated-right">
+          <i
+            class="add icon"></i>Добавить
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="ui divider"></div>
+  <div class="ui page grid">
+    <div ngfx-speed="slow" ngfx-fade-in="true" class="ui page grid">
+      <div class="two column row">
+        <div style="text-align: center" class="column">
+          <h4>Всего зарегистрировано купюр: {{countOfBanknotes.count}}</h4>
+        </div>
+        <div style="text-align: center" class="column">
+          <h4>На сумму: {{summ.count}} руб.</h4>
+        </div>
+      </div>
+      <br>
+      <div class="three column row">
+        <div class="column">
+          <h2 class="ui header">Топ 5 юзеров</h2>
+          <table class="ui celled red table">
+            <thead>
+            <th>#</th>
+            <th>Имя</th>
+            </thead>
+            <tr ng-repeat="user in statsUsers">
+              <td>{{$index+1}}</td>
+              <td>{{user[0]}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="column">
+          <h2 class="ui header">Топ 5 городов</h2>
+          <table class="ui green celled table">
+            <thead>
+            <th>#</th>
+            <th>Название</th>
+            </thead>
+            <tr ng-repeat="loc in statsLocalities">
+              <td>{{$index+1}}</td>
+              <td>{{loc[0]}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="column">
+          <h2 class="ui header">Топ 5 купюр</h2>
+          <table class="ui blue celled table">
+            <thead>
+            <th>#</th>
+            <th>Номер</th>
+            </thead>
+            <tr ng-repeat="record in statsRecords">
+              <td>{{$index+1}}</td>
+              <td>{{record[0]}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="ui divider"></div>
+    </div>
+  </div>
+</div>
+
+
+
+

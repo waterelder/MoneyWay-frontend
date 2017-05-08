@@ -1,0 +1,82 @@
+<div class="ui large inverted menu">
+ <a class="item">
+    <img class="logo" style="margin-right: 20px" src="/images/map_icon.png">
+  </a>
+  <a style="margin-left: 2%" ng-click="goToMain()"  class="item">
+    <!-- <img class="logo" style="margin-right: 20px" src="/images/map_icon.png">-->
+    <h2><i class="home teal icon"></i></h2>
+  </a>
+  <!-- <a class="item">
+     О проекте
+   </a>
+   <a class="item">
+     Новости
+   </a>-->
+  <div id="custom-error-notification">
+    <div>
+      <div class="header">
+        Ошибка
+      </div>
+      <p>
+      </p>
+    </div>
+  </div>
+  <div id="custom-success-notification">
+    <div>
+      <div class="header">
+        Успех
+      </div>
+      <p>
+      </p>
+    </div>
+  </div>
+
+
+  <div class="ui small modal supersmall login">
+    <i class="close icon"></i>
+    <div class="header">Авторизация</div>
+    <div class="content">
+      <form class="ui form one column grid left-login-fix" id="login_form">
+        <div class="row">
+          <div class=" two column field">
+            <label>Логин/Email</label>
+            <input ng-model="loginData.credintial" type="text" name="login"
+                   placeholder="Логин/Email" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="two column field row">
+            <label>Пароль</label>
+            <input ng-model="loginData.password" type="password"
+                   placeholder="Пароль" required>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="actions">
+      <div ng-click="login()" class="ui positive right  labeled icon button" type="submit">
+        Вход
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="right menu">
+    <a class="ui item" ng-if="!isAuthenticated()">
+      <div ng-click="goToRegister()" class="ui  button">Регистрация</div>
+    </a>
+    <a class="ui item" ng-if="!isAuthenticated()">
+      <div ng-click="loginModal()" class="ui teal  button">Вход</div>
+    </a>
+    <a class="ui item" ng-if="isAuthenticated()">
+      {{user.username}}
+    </a>
+    <a class="ui item" ng-if="isAuthenticated()">
+      <div ng-click="logout()" class="ui button">Выход</div>
+    </a>
+  </div>
+</div>
+
+
+
